@@ -1,0 +1,7 @@
+{%for appointment in appointments%}
+<div class="appointment-month" onclick="showList('day', '{{appointment.date}}')">
+  <div class="mounth">{{appointment.month}}</div>
+  <div class="day">{{appointment.day}}</div>
+  <div class="count">{{appointment.year}}</div>
+</div>
+{%endfor%}

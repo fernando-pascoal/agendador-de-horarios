@@ -1,0 +1,7 @@
+{%for appointment in appointments %}
+  <div class="appointment">
+    <img src="/files/{{appointment.avatar}}"/>
+    <div class="appointment-name">{{appointment.name}}</div>
+    <div class="appointment-date">{{appointment.hour}}</div>
+  </div>
+{%endfor%}

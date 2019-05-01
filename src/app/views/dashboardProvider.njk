@@ -1,0 +1,63 @@
+{% extends "_layouts/default.njk" %}
+
+{%block body %}
+<div class="provider-content">
+  <h1>Bem vindo {{user.name}}</h1>
+  <div class="options">
+    <button id="bday" class="option-button show" onclick="showList('day')">Hoje</button>
+    <button id="bmonth"class="option-button" onclick="showList('month')">Mês</button>
+  </div>
+  <div id="day" class="list">
+  </div>
+  <div id="month" class="list" style="display:none">
+  </div>
+  <a class="logout"href="/app/logout">Sair</a>
+</div>
+
+<script>
+function showList(periodo, data) {
+  var i;
+  var lists = document.getElementsByClassName("list");
+  var menus = document.getElementsByClassName("option-button");
+  for (i = 0; i < lists.length; i++) {
+    lists[i].style.display = "none";
+    menus[i].classList.remove('show')
+  }
+  document.getElementById("b"+periodo).classList.add("show");
+  document.getElementById(periodo).style.display = 'flex';
+
+  if(periodo==='month'){
+    showMonth()
+  }
+  if(periodo==='day'){
+    if(!data){
+    document.getElementById('bday').innerHTML = "Hoje"
+    return showDay()
+    }
+    document.getElementById('bday').innerHTML = "Dia "+data.split('-')[2]
+    showDay(data)
+  }
+}
+function showDay(date){
+  if(!date) date=new Date()
+  const dayContainer = document.getElementById('day')
+    fetch(`/app/dashboard/day?date=${date}`).then(resp =>{
+      resp.text().then(html =>{
+        dayContainer.innerHTML = html
+      })
+    })
+}
+function showMonth(){
+  const mesContainer = document.getElementById('month')
+    fetch('/app/dashboard/month').then(resp =>{
+      resp.text().then(html =>{
+        mesContainer.innerHTML = html
+      })
+    })
+}
+window.onload = function(){
+  showDay()
+}
+</script>
+
+{%endblock%}
